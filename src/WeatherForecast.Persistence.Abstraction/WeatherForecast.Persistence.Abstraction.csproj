@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>WeatherForecast.Persistence.Abstraction</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\WeatherForecast.Domain\WeatherForecast.Domain.csproj" />
+    </ItemGroup>
+
+</Project>

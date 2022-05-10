@@ -1,0 +1,75 @@
+using System.IO;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Bson.Serialization.Conventions;
+using Newtonsoft.Json.Serialization;
+using WeatherForecast.Endpoint.GrpcServices;
+using WeatherForecast.Persistence;
+using WeatherForecast.Persistence.Abstraction;
+
+namespace WeatherForecast.Endpoint
+{
+    public class Startup
+    {
+        private readonly IConfiguration _configuration;
+
+        public Startup(IConfiguration configuration) => _configuration = configuration;
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSingleton(sp => new ForecastDbSettings
+            {
+                ConnectionString = _configuration["ForecastDbSettings:ConnectionString"],
+                DatabaseName = _configuration["ForecastDbSettings:DatabaseName"]
+            });
+
+            ConventionRegistry.Register(
+                "camelCase",
+                new ConventionPack {new CamelCaseElementNameConvention()},
+                t => true);
+
+            // BsonClassMap.RegisterClassMap<ForecastDbo>();
+            services.AddTransient<IRepository, Repository>();
+
+            services.AddMvc()
+                .AddNewtonsoftJson(options =>
+                    {
+                        options.SerializerSettings.ContractResolver = new DefaultContractResolver
+                        {
+                            NamingStrategy = new SnakeCaseNamingStrategy()
+                        };
+                        // var dateConverter = new Newtonsoft.Json.Converters.IsoDateTimeConverter
+                        // {
+                        //     DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':ss"
+                        // };
+                        //
+                        // options.SerializerSettings.Converters.Add(dateConverter);
+                        // // options.SerializerSettings.Culture = new CultureInfo("en-IE");
+                        // options.SerializerSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+                    }
+                );
+            services.AddGrpc();
+            services.AddSwaggerGen(c=>
+            {
+                var filePath = Path.Combine(System.AppContext.BaseDirectory, "WeatherForecast.Endpoint.xml");
+                c.IncludeXmlComments(filePath);
+            });
+        }
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapGrpcService<ForecastGrpcService>();
+            });
+        }
+    }
+}

@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherForecast.Endpoint", "src\WeatherForecast.Endpoint\WeatherForecast.Endpoint.csproj", "{D4E84C3C-A331-4B72-BD40-6E08AE9DE219}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherForecast.Domain", "src\WeatherForecast.Domain\WeatherForecast.Domain.csproj", "{190FE804-B860-4F73-B87E-0F2C74C63D3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherForecast.Persistence.Abstraction", "src\WeatherForecast.Persistence.Abstraction\WeatherForecast.Persistence.Abstraction.csproj", "{6D366B99-111D-40E3-B5AB-E6D5DB1B1A94}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherForecast.Persistence", "src\WeatherForecast.Persistence\WeatherForecast.Persistence.csproj", "{9CA98164-37F8-4B8F-89E9-3D90485CB7B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherForecast.GismeteoRipper", "src\WeatherForecast.GismeteoRipper\WeatherForecast.GismeteoRipper.csproj", "{4975B9CB-9219-422C-86F4-144187022F65}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7FCFE740-28EF-4EEF-B13A-8BB2C7C6BEE7}"
+ProjectSection(SolutionItems) = preProject
+	endpoint.Dockerfile = src\endpoint.Dockerfile
+	src\docker-compose.yaml = src\docker-compose.yaml
+EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D4E84C3C-A331-4B72-BD40-6E08AE9DE219}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4E84C3C-A331-4B72-BD40-6E08AE9DE219}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4E84C3C-A331-4B72-BD40-6E08AE9DE219}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4E84C3C-A331-4B72-BD40-6E08AE9DE219}.Release|Any CPU.Build.0 = Release|Any CPU
+		{190FE804-B860-4F73-B87E-0F2C74C63D3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{190FE804-B860-4F73-B87E-0F2C74C63D3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{190FE804-B860-4F73-B87E-0F2C74C63D3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{190FE804-B860-4F73-B87E-0F2C74C63D3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D366B99-111D-40E3-B5AB-E6D5DB1B1A94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D366B99-111D-40E3-B5AB-E6D5DB1B1A94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D366B99-111D-40E3-B5AB-E6D5DB1B1A94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D366B99-111D-40E3-B5AB-E6D5DB1B1A94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CA98164-37F8-4B8F-89E9-3D90485CB7B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CA98164-37F8-4B8F-89E9-3D90485CB7B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CA98164-37F8-4B8F-89E9-3D90485CB7B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CA98164-37F8-4B8F-89E9-3D90485CB7B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4975B9CB-9219-422C-86F4-144187022F65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4975B9CB-9219-422C-86F4-144187022F65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4975B9CB-9219-422C-86F4-144187022F65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4975B9CB-9219-422C-86F4-144187022F65}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{190FE804-B860-4F73-B87E-0F2C74C63D3A} = {7FCFE740-28EF-4EEF-B13A-8BB2C7C6BEE7}
+		{D4E84C3C-A331-4B72-BD40-6E08AE9DE219} = {7FCFE740-28EF-4EEF-B13A-8BB2C7C6BEE7}
+		{4975B9CB-9219-422C-86F4-144187022F65} = {7FCFE740-28EF-4EEF-B13A-8BB2C7C6BEE7}
+		{9CA98164-37F8-4B8F-89E9-3D90485CB7B4} = {7FCFE740-28EF-4EEF-B13A-8BB2C7C6BEE7}
+		{6D366B99-111D-40E3-B5AB-E6D5DB1B1A94} = {7FCFE740-28EF-4EEF-B13A-8BB2C7C6BEE7}
+	EndGlobalSection
+EndGlobal
