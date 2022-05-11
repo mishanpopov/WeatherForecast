@@ -8,16 +8,16 @@ services:
       - "5001:5001"
       - "5002:5002"
     environment:
-      - ForecastDbSettings__ConnectionString=mongodb://AzureDiamond:hunter2@mongodb
+      - ForecastDbSettings__ConnectionString=mongodb://mongodb
+      - ForecastDbSettings__DatabaseName=forecast
   job:
     build:
       context: WeatherForecast.GismeteoRipper
     environment:
-      - WeatherForecastEndpoint=endpoint
+      - WeatherForecastService__Endpoint=endpoint
+      - WeatherForecastService__Port=5002
+      - GismetioEndpoint=https://www.gismeteo.ru
   mongodb:
     image: mongo:latest
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=AzureDiamond
-      - MONGO_INITDB_ROOT_PASSWORD=hunter2
     ports:
       - "27018:27017"

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson.Serialization.Conventions;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using WeatherForecast.Endpoint.GrpcServices;
 using WeatherForecast.Persistence;
@@ -30,7 +31,6 @@ namespace WeatherForecast.Endpoint
                 new ConventionPack {new CamelCaseElementNameConvention()},
                 t => true);
 
-            // BsonClassMap.RegisterClassMap<ForecastDbo>();
             services.AddTransient<IRepository, Repository>();
 
             services.AddMvc()
@@ -38,16 +38,10 @@ namespace WeatherForecast.Endpoint
                     {
                         options.SerializerSettings.ContractResolver = new DefaultContractResolver
                         {
-                            NamingStrategy = new SnakeCaseNamingStrategy()
+                            NamingStrategy = new SnakeCaseNamingStrategy(),
+                            
                         };
-                        // var dateConverter = new Newtonsoft.Json.Converters.IsoDateTimeConverter
-                        // {
-                        //     DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':ss"
-                        // };
-                        //
-                        // options.SerializerSettings.Converters.Add(dateConverter);
-                        // // options.SerializerSettings.Culture = new CultureInfo("en-IE");
-                        // options.SerializerSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+                        options.SerializerSettings.Converters.Add(new StringEnumConverter());
                     }
                 );
             services.AddGrpc();

@@ -1,18 +1,13 @@
 using System;
-using ForecastWeather;
 using Google.Protobuf.WellKnownTypes;
-using WeatherForecast.GismeteoRipper.Models;
-using Temperature = WeatherForecast.GismeteoRipper.Models.Temperature;
-using WeatherForecast = ForecastWeather.WeatherForecast;
-using Wind = WeatherForecast.GismeteoRipper.Models.Wind;
 
-namespace FuuuWeatherForecast.GismeteoRipper.Models
+namespace WeatherForecast.GismeteoRipper.Models
 {
     public static class Mappers
     {
-        public static ForecastWeather.WeatherForecast ToProto(this Forecast obj)
+        public static WeatherForecast.Forecast ToProto(this Forecast obj)
         {
-            return new ForecastWeather.WeatherForecast
+            return new WeatherForecast.Forecast
             {
                 Temperature = obj.Temperature.ToProto(),
                 Date = obj.Date.ToTimestamp(),
@@ -26,16 +21,16 @@ namespace FuuuWeatherForecast.GismeteoRipper.Models
             };
         }
 
-        private static ForecastWeather.Temperature ToProto(this Temperature obj)
+        private static WeatherForecast.Temperature ToProto(this Temperature obj)
         {
-            return new ForecastWeather.Temperature
+            return new WeatherForecast.Temperature
             {
                 Value = obj.Value,
                 FeelsLike = obj.FeelsLike
             };
         }
 
-        private static ForecastWeather.Wind ToProto(this Wind obj)
+        private static WeatherForecast.Wind ToProto(this Wind obj)
         {
             var direction = obj.Direction switch
             {
@@ -51,7 +46,7 @@ namespace FuuuWeatherForecast.GismeteoRipper.Models
                 _ => throw new ArgumentOutOfRangeException()
             };
 
-            return new ForecastWeather.Wind
+            return new WeatherForecast.Wind
             {
                 Value = obj.Value,
                 Direction = direction

@@ -3,22 +3,17 @@ syntax = "proto3";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 
-package forecast_weather;
+package weather_forecast;
 
 service ForecastApi {
-  rpc GetWeatherForecasts (google.protobuf.Empty) returns (GetWeatherForecastsResponse);
   rpc SaveWeatherForecasts (SaveWeatherForecastsRequest) returns (google.protobuf.Empty);
 }
 
-message GetWeatherForecastsResponse {
-  repeated WeatherForecast forecasts = 1;
-}
-
 message SaveWeatherForecastsRequest {
-  repeated WeatherForecast forecasts = 1;
+  repeated Forecast forecasts = 1;
 }
 
-message WeatherForecast {
+message Forecast {
   google.protobuf.Timestamp date = 1;
   Temperature temperature = 2;
   Wind wind = 3;

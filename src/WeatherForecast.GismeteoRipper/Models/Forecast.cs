@@ -1,13 +1,18 @@
 using System;
-using MongoDB.Bson.Serialization.Attributes;
 
-namespace WeatherForecast.Persistence
+namespace WeatherForecast.GismeteoRipper.Models
 {
-    [BsonIgnoreExtraElements]
-    public class ForecastDbo
+    public class Forecast
     {
-        public ForecastDbo(TemperatureDbo temperature, WindDbo wind, int pressure, int humidity,
-            int geomagneticActivity, double waterTemperature, string weatherType, string city, DateTime date)
+        public Forecast(
+            Temperature temperature,
+            Wind wind,
+            int pressure,
+            int humidity,
+            int geomagneticActivity,
+            double waterTemperature,
+            string weatherType,
+            DateTime date)
         {
             Temperature = temperature;
             Wind = wind;
@@ -16,18 +21,17 @@ namespace WeatherForecast.Persistence
             GeomagneticActivity = geomagneticActivity;
             WaterTemperature = waterTemperature;
             WeatherType = weatherType;
-            City = city;
             Date = date;
         }
 
-        public TemperatureDbo Temperature { get; }
-        public WindDbo Wind { get; }
+        public Temperature Temperature { get; }
+        public Wind Wind { get; }
         public int Pressure { get; }
         public int Humidity { get; }
         public int GeomagneticActivity { get; }
         public double WaterTemperature { get; }
         public string WeatherType { get; }
-        public string City { get; }
         public DateTime Date { get; }
+        public string City { get; set; }
     }
 }

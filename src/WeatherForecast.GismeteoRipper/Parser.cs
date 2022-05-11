@@ -7,12 +7,6 @@ using WeatherForecast.GismeteoRipper.Models;
 
 namespace WeatherForecast.GismeteoRipper
 {
-    public interface IParser
-    {
-        IEnumerable<City> GetPopularCities(string html);
-        Models.Forecast GetForecast(string html);
-    }
-
     public class Parser : IParser
     {
         private static readonly NumberFormatInfo DecimalNumberFormatInfo =
@@ -48,7 +42,7 @@ namespace WeatherForecast.GismeteoRipper
             return cities;
         }
 
-        public Models.Forecast GetForecast(string html)
+        public WeatherForecast.GismeteoRipper.Models.Forecast GetForecast(string html)
         {
             var htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(html);
@@ -61,7 +55,7 @@ namespace WeatherForecast.GismeteoRipper
             var geomagneticActivity = ParseGeomagneticActivity(htmlDoc.DocumentNode);
             var waterTemperature = ParseWaterTemperature(htmlDoc.DocumentNode);
 
-            return new Forecast(
+            return new WeatherForecast.GismeteoRipper.Models.Forecast(
                 temperature,
                 wind,
                 pressure,
@@ -72,7 +66,7 @@ namespace WeatherForecast.GismeteoRipper
                 DateTime.UtcNow);
         }
 
-        private Temperature ParseTemperature(HtmlNode htmlNode)
+        private static WeatherForecast.GismeteoRipper.Models.Temperature ParseTemperature(HtmlNode htmlNode)
         {
             const string temperatureXPath =
                 ".//div[@class='now']/div[@class='now-weather']/span[@class='unit unit_temperature_c']";
@@ -86,30 +80,18 @@ namespace WeatherForecast.GismeteoRipper
             var feelsLikeTemperatureNode = htmlNode.SelectSingleNode(feelsLikeTemperatureXPath);
             var feelsLikeTemperature = ParseDouble(feelsLikeTemperatureNode);
 
-            return new Temperature(temperature, feelsLikeTemperature);
+            return new WeatherForecast.GismeteoRipper.Models.Temperature(temperature, feelsLikeTemperature);
         }
 
-        private string ParseWeatherType(HtmlNode htmlNode)
+        private static string ParseWeatherType(HtmlNode htmlNode)
         {
-            const string XPath = ".//div[@class='now']/div[@class='now-desc']";
+            const string xPath = ".//div[@class='now']/div[@class='now-desc']";
 
-            var weatherTypeNode = htmlNode.SelectSingleNode(XPath);
+            var weatherTypeNode = htmlNode.SelectSingleNode(xPath);
             return weatherTypeNode.InnerText.Trim();
-            // todo: error handling
-            // return weatherTypeNode.InnerText.Trim().ToLower() switch
-            // {
-            //     "малооблачно" => WeatherType.Cloudy,
-            //     "облачно"=>WeatherType.Cloudy,
-            //     "ясно" => WeatherType.Clear,
-            //     "пасмурно"=>WeatherType.Cloudy,
-            //     "облачно, дождь" => WeatherType.Rainy,
-            //     "облачно, небольшой дождь" => WeatherType.Rainy,
-            //     "пасмурно, ливневый дождь" => WeatherType.Rainy,
-            //     _ => throw new ArgumentOutOfRangeException("Weather type")
-            // };
         }
 
-        private Wind ParseWind(HtmlNode htmlNode)
+        private static WeatherForecast.GismeteoRipper.Models.Wind ParseWind(HtmlNode htmlNode)
         {
             const string valueXPath =
                 ".//div[@class='now']/div[@class='now-info']//div[@class='unit unit_wind_m_s']/text()";
@@ -123,58 +105,58 @@ namespace WeatherForecast.GismeteoRipper
             var windDirectionNode = htmlNode.SelectSingleNode(directionXPath);
             var direction = windDirectionNode.InnerText.Trim().ToLower() switch
             {
-                "западный" => Wind.WindDirection.West,
-                "сз"=>Wind.WindDirection.NorthWest,
-                "св"=>Wind.WindDirection.NorthEast,
-                "южный"=>Wind.WindDirection.South,
-                "северный"=>Wind.WindDirection.North,
-                "юз"=>Wind.WindDirection.SouthWest,
-                "восточный"=>Wind.WindDirection.East,
-                "юв"=>Wind.WindDirection.SouthEast,
-                "штиль"=>Wind.WindDirection.Calm,
+                "западный" => WeatherForecast.GismeteoRipper.Models.Wind.WindDirection.West,
+                "сз"=>WeatherForecast.GismeteoRipper.Models.Wind.WindDirection.NorthWest,
+                "св"=>WeatherForecast.GismeteoRipper.Models.Wind.WindDirection.NorthEast,
+                "южный"=>WeatherForecast.GismeteoRipper.Models.Wind.WindDirection.South,
+                "северный"=>WeatherForecast.GismeteoRipper.Models.Wind.WindDirection.North,
+                "юз"=>WeatherForecast.GismeteoRipper.Models.Wind.WindDirection.SouthWest,
+                "восточный"=>WeatherForecast.GismeteoRipper.Models.Wind.WindDirection.East,
+                "юв"=>WeatherForecast.GismeteoRipper.Models.Wind.WindDirection.SouthEast,
+                "штиль"=>WeatherForecast.GismeteoRipper.Models.Wind.WindDirection.Calm,
                 _ => throw new ArgumentOutOfRangeException("wind direction")
             };
 
-            return new Wind(wind, direction);
+            return new WeatherForecast.GismeteoRipper.Models.Wind(wind, direction);
         }
 
-        private int ParsePressure(HtmlNode htmlNode)
+        private static int ParsePressure(HtmlNode htmlNode)
         {
-            const string XPath =
+            const string xPath =
                 ".//div[@class='now']/div[@class='now-info']//div[@class='unit unit_pressure_mm_hg_atm']/text()";
 
-            var pressureValueNode = htmlNode.SelectSingleNode(XPath);
+            var pressureValueNode = htmlNode.SelectSingleNode(xPath);
             return ParseInteger(pressureValueNode);
         }
 
-        private int ParseHumidity(HtmlNode htmlNode)
+        private static int ParseHumidity(HtmlNode htmlNode)
         {
-            const string XPath
+            const string xPath
                 = ".//div[@class='now']/div[@class='now-info']//div[@class='now-info-item humidity']/div[@class='item-value']";
 
-            var humidityValueNode = htmlNode.SelectSingleNode(XPath);
+            var humidityValueNode = htmlNode.SelectSingleNode(xPath);
             return ParseInteger(humidityValueNode);
         }
 
-        private int ParseGeomagneticActivity(HtmlNode htmlNode)
+        private static int ParseGeomagneticActivity(HtmlNode htmlNode)
         {
-            const string XPath
+            const string xPath
                 = ".//div[@class='now']/div[@class='now-info']//div[@class='now-info-item gm']/div[@class='item-value']";
 
-            var geomagneticActivityNode = htmlNode.SelectSingleNode(XPath);
+            var geomagneticActivityNode = htmlNode.SelectSingleNode(xPath);
             return ParseInteger(geomagneticActivityNode);
         }
 
-        private double ParseWaterTemperature(HtmlNode htmlNode)
+        private static double ParseWaterTemperature(HtmlNode htmlNode)
         {
-            const string XPath
+            const string xPath
                 = ".//div[@class='now']/div[@class='now-info']//div[@class='now-info-item water']//div[@class='unit unit_temperature_c']";
 
-            var waterTemperatureNode = htmlNode.SelectSingleNode(XPath);
+            var waterTemperatureNode = htmlNode.SelectSingleNode(xPath);
             return ParseDouble(waterTemperatureNode);
         }
 
-        private double ParseDouble(HtmlNode htmlNode)
+        private static double ParseDouble(HtmlNode htmlNode)
         {
             if (!double.TryParse(htmlNode.InnerText,
                 NumberStyles.Any,
@@ -187,7 +169,7 @@ namespace WeatherForecast.GismeteoRipper
             return value;
         }
 
-        private int ParseInteger(HtmlNode htmlNode)
+        private static int ParseInteger(HtmlNode htmlNode)
         {
             if (!int.TryParse(htmlNode.InnerText,
                 out var value))

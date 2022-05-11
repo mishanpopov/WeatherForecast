@@ -29,7 +29,7 @@ namespace WeatherForecast.Endpoint.Controllers
         /// <summary>
         /// Returns a forecast for specified city and date
         /// </summary>
-        /// <param name="city" example="Moscow"></param>
+        /// <param name="city" example="Москва"></param>
         /// <param name="date" example="2022-05-10">The date of the forecast, YYYY-MM-DD</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
@@ -40,7 +40,7 @@ namespace WeatherForecast.Endpoint.Controllers
             [FromRoute] DateTime date,
             CancellationToken cancellationToken)
         {
-            var forecast = await _repository.GetForecast(city, date, cancellationToken);
+            var forecast = await _repository.GetForecast(city.Trim(), date, cancellationToken);
             if (forecast == null)
             {
                 return NotFound();

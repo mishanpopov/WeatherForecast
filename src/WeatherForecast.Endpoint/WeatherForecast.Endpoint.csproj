@@ -7,9 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\WeatherForecast.Domain\WeatherForecast.Domain.csproj" />
-      <ProjectReference Include="..\..\WeatherForecast.Persistence.Abstraction\WeatherForecast.Persistence.Abstraction.csproj" />
-      <ProjectReference Include="..\..\WeatherForecast.Persistence\WeatherForecast.Persistence.csproj" />
       <ProjectReference Include="..\WeatherForecast.Domain\WeatherForecast.Domain.csproj" />
       <ProjectReference Include="..\WeatherForecast.Persistence.Abstraction\WeatherForecast.Persistence.Abstraction.csproj" />
       <ProjectReference Include="..\WeatherForecast.Persistence\WeatherForecast.Persistence.csproj" />

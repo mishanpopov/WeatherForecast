@@ -12,7 +12,7 @@ namespace WeatherForecast.Persistence
 {
     public class Repository : IRepository
     {
-        private const string CollectionName = "forecast";
+        private const string CollectionName = "forecast.snapshots";
 
         private readonly IMongoCollection<ForecastDbo> _forecastCollection;
 
@@ -26,7 +26,8 @@ namespace WeatherForecast.Persistence
 
         public Task Create(IEnumerable<Forecast> forecast, CancellationToken cancellationToken)
         {
-            return _forecastCollection.InsertManyAsync(forecast.Select(f => f.ToDbo()),
+            return _forecastCollection.InsertManyAsync(
+                forecast.Select(f => f.ToDbo()),
                 cancellationToken: cancellationToken);
         }
 
@@ -36,7 +37,8 @@ namespace WeatherForecast.Persistence
             CancellationToken cancellationToken)
         {
             var filter = Builders<ForecastDbo>.Filter.Eq("city", city.ToLower())
-                         & Builders<ForecastDbo>.Filter.Gte("date", date.Date);
+                         & Builders<ForecastDbo>.Filter.Gte("date", date.Date)
+                         & Builders<ForecastDbo>.Filter.Lt("date", date.Date.AddDays(1));
 
             var dbo = await _forecastCollection.Find(filter).FirstOrDefaultAsync(cancellationToken);
 

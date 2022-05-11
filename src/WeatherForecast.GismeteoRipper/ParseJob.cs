@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ForecastWeather;
-using FuuuWeatherForecast.GismeteoRipper.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WeatherForecast.GismeteoRipper.Models;
@@ -15,10 +13,7 @@ namespace WeatherForecast.GismeteoRipper
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public ParseJob(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-        }
+        public ParseJob(IServiceProvider serviceProvider) => _serviceProvider = serviceProvider;
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -28,7 +23,6 @@ namespace WeatherForecast.GismeteoRipper
             {
                 try
                 {
-                    Console.WriteLine("Go for a forecast");
                     using (var scope = _serviceProvider.CreateScope())
                     {
                         var gismeteoClient = scope.ServiceProvider.GetRequiredService<IGismeteoHttpClient>();
@@ -36,11 +30,10 @@ namespace WeatherForecast.GismeteoRipper
                             scope.ServiceProvider.GetRequiredService<ForecastApi.ForecastApiClient>();
                         var parser = scope.ServiceProvider.GetRequiredService<IParser>();
 
-
                         var citiesHtml = await gismeteoClient.GetPopularCitiesHtml();
                         var cities = parser.GetPopularCities(citiesHtml);
 
-                        var forecastList = new List<Forecast>();
+                        var forecastList = new List<WeatherForecast.GismeteoRipper.Models.Forecast>();
                         foreach (var city in cities)
                         {
                             var forecastHtml = await gismeteoClient.GetDetailedCityForecastHtml(city.Id);
@@ -50,8 +43,7 @@ namespace WeatherForecast.GismeteoRipper
                         }
 
                         var saveRequest = new SaveWeatherForecastsRequest();
-                        var weatherForecast = forecastList.Select(f => f.ToProto());
-                        saveRequest.Forecasts.AddRange(weatherForecast);
+                        saveRequest.Forecasts.AddRange(forecastList.Select(f => f.ToProto()));
                         await weatherForecastClient.SaveWeatherForecastsAsync(saveRequest);
                     }
 
